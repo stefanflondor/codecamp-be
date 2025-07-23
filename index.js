@@ -31,6 +31,42 @@ var listener = app.listen(process.env.PORT || 3000, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
 
+// In-memory store for simplicity
+const urlDatabase = {};
+let idCounter = 1;
+
+// ✅ POST: /api/shorturl
+app.post('/api/shorturl', (req, res) => {
+  const originalUrl = req.body.url;
+
+  // Basic validation for http(s) URLs
+  const urlRegex = /^https?:\/\/.+/;
+  if (!urlRegex.test(originalUrl)) {
+    return res.json({ error: 'invalid url' });
+  }
+
+  const shortUrl = idCounter++;
+  urlDatabase[shortUrl] = originalUrl;
+
+  res.json({
+    original_url: originalUrl,
+    short_url: shortUrl
+  });
+});
+
+// ✅ GET: /api/shorturl/:short_url
+app.get('/api/shorturl/:short_url', (req, res) => {
+  const shortUrl = req.params.short_url;
+  const originalUrl = urlDatabase[shortUrl];
+
+  if (originalUrl) {
+    return res.redirect(originalUrl);
+  } else {
+    return res.status(404).json({ error: 'No short URL found for given input' });
+  }
+});
+
+//who am i endpoint
 app.get('/api/whoami', (req, res) => {
   const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
   const language = req.headers['accept-language'];
