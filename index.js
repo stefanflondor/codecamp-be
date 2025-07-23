@@ -13,6 +13,10 @@ app.use(cors({optionsSuccessStatus: 200}));  // some legacy browsers choke on 20
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'));
 
+app.use(express.urlencoded({ extended: true })); // for form submissions
+app.use(express.json()); // for JSON submissions
+
+
 // http://expressjs.com/en/starter/basic-routing.html
 app.get("/", function (req, res) {
   res.sendFile(__dirname + '/views/index.html');
