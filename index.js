@@ -35,6 +35,9 @@ var listener = app.listen(process.env.PORT || 3000, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
 
+const exerciseRoutes = require('./routes/exercise.js');
+app.use('/api', exerciseRoutes);
+
 // In-memory store for simplicity
 const urlDatabase = {};
 let idCounter = 1;
