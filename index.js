@@ -38,7 +38,7 @@ var listener = app.listen(process.env.PORT || 3000, function () {
 const exerciseRoutes = require('./routes/exercise.js');
 app.use('/api', exerciseRoutes);
 
-const fileRoutes = require('./routes/files.js');
+const fileRoutes = require('./routes/file.js');
 app.use('/api', fileRoutes);
 
 // In-memory store for simplicity
